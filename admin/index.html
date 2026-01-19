@@ -27,3 +27,19 @@
     </script>
   </body>
 </html>
+
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("login", () => {
+      document.location.href = "/admin/#/";
+    });
+
+    window.netlifyIdentity.on("init", (user) => {
+      // If user hits /admin from an invite flow, show the widget automatically
+      if (!user && window.location.hash === "") {
+        window.netlifyIdentity.open();
+      }
+    });
+  }
+</script>
+
