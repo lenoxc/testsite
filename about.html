@@ -7,69 +7,113 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
   <style>
-    :root { --primary: #ff4b4b; }
+    :root { --primary: #ff4b4b; --card-bg: #110826; }
     .brand { color: var(--primary); font-family: 'Orbitron', sans-serif; font-weight: 900; }
-    .navlinks a.active { color: var(--primary); }
-    .section-title { font-family: 'Orbitron', sans-serif; color: var(--primary); }
-    .about-header { font-family: 'Orbitron', sans-serif; font-weight: 900; color: white; }
+    .navlinks a.active { color: var(--primary); background: rgba(255,255,255,0.05); border-radius: 8px; padding: 5px 15px; }
+    
+    .section-title { 
+      font-family: 'Orbitron', sans-serif; 
+      color: var(--primary); 
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .about-header { 
+      font-family: 'Orbitron', sans-serif; 
+      font-weight: 900; 
+      color: white; 
+      font-size: 34px;
+      text-align: center;
+      margin: 60px 0;
+    }
+
+    /* Fixes the Grid and Card backgrounds */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      max-width: 1100px;
+      margin: 0 auto 80px;
+    }
+
+    .value-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      min-height: 200px;
+    }
+
+    .value-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      margin: 15px 0 10px;
+    }
+
+    .value-card p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.8);
+    }
+
+    @media (max-width: 768px) {
+      .values-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <div id="bg"></div>
-  <div class="page">
-    <div class="nav">
-      <div class="nav-inner">
-        <a href="index.html" style="text-decoration: none;">
-          <div class="brand">IHCC Cybersecurity Club</div>
-        </a>
-        <div class="navlinks">
-          <a href="index.html">Home</a>
-          <a class="active" href="about.html">About</a>
-          <a href="notes.html">Notes</a>
-        </div>
-      </div>
-    </div>
 
-    <section class="band" style="padding: 56px 0 26px;">
-      <div class="container" style="text-align:center;">
-        <div class="about-header" style="font-size:34px;">About the IHCC Cybersecurity Club</div>
-      </div>
-    </section>
-
-    <section class="band">
-      <div class="container">
-        <div class="section-title">Our Values</div>
-        <div class="grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-          <div class="card">
-            <div class="icon">🤝</div>
-            <h3 style="font-family: 'Orbitron', sans-serif;">Community</h3>
-            <p>Build strong student connections that last beyond the classroom.</p>
-          </div>
-          <div class="card">
-            <div class="icon">📚</div>
-            <h3 style="font-family: 'Orbitron', sans-serif;">Support</h3>
-            <p>Study groups and peer help to improve understanding and success.</p>
-          </div>
-          <div class="card">
-            <div class="icon">🧠</div>
-            <h3 style="font-family: 'Orbitron', sans-serif;">Collaboration</h3>
-            <p>Work together on challenges and projects to learn teamwork skills.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <a href="index.html" style="text-decoration: none; color: inherit;">
-        <div style="font-weight:900; font-family: 'Orbitron', sans-serif;">IHCC Cyber</div>
+  <div class="nav">
+    <div class="nav-inner">
+      <a href="index.html" style="text-decoration: none;">
+        <div class="brand">IHCC Cybersecurity Club</div>
       </a>
-      <div class="mini">
+      <div class="navlinks">
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
+        <a class="active" href="about.html">About</a>
         <a href="notes.html">Notes</a>
       </div>
-    </footer>
+    </div>
   </div>
+
+  <div class="container">
+    <h1 class="about-header">About the IHCC Cybersecurity Club</h1>
+
+    <div class="section-title">Our Values</div>
+
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="icon">🤝</div>
+        <h3>Community</h3>
+        <p>Build strong student connections that last beyond the classroom.</p>
+      </div>
+
+      <div class="value-card">
+        <div class="icon">📚</div>
+        <h3>Support</h3>
+        <p>Study groups and peer help to improve understanding and success.</p>
+      </div>
+
+      <div class="value-card">
+        <div class="icon">🧠</div>
+        <h3>Collaboration</h3>
+        <p>Work together on challenges and projects to learn teamwork skills.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <a href="index.html" style="text-decoration: none; color: inherit;">
+      <div style="font-weight:900; font-family: 'Orbitron', sans-serif;">IHCC Cyber</div>
+    </a>
+    <div class="mini">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="notes.html">Notes</a>
+    </div>
+  </footer>
+
   <script type="module">
     import { startBackgroundNet } from "./assets/bg-network.js";
     startBackgroundNet("bg");
