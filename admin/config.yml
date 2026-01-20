@@ -2,12 +2,8 @@ backend:
   name: github
   repo: IHCC-Cyber-Club/Club-Website
   branch: main
-  base_url: https://test-site-ruby-tau.vercel.app # Change this to your actual Vercel URL
+  base_url: https://test-site-ruby-tau.vercel.app
   auth_endpoint: /api/auth
-
-# editorial_workflow is great but requires a more complex GitHub setup. 
-# For a simple club site, 'simple' mode is much easier to pass down.
-publish_mode: simple 
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
@@ -17,12 +13,10 @@ collections:
     label: "Meeting Notes"
     folder: "content/notes"
     create: true
-    # This slug ensures files are named YYYY-MM-DD-title.md for the auto-loader
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     extension: "md"
     format: "frontmatter"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-      - { label: "Attendance", name: "attendance", widget: "string", required: false }
       - { label: "Minutes", name: "body", widget: "markdown" }
