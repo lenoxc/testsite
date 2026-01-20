@@ -2,23 +2,38 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IHCC Admin Portal</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
-  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
   <script>
-    // This script catches the login from GitHub and passes it to the CMS
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
+    window.CMS_MANUAL_INIT = true;
+    CMS.init({
+      config: {
+        backend: {
+          name: "github",
+          repo: "IHCC-Cyber-Club/Club-Website",
+          branch: "main",
+          base_url: "https://test-site-yjoz3ihxs-cael-lenoxs-projects.vercel.app",
+          auth_endpoint: "api/auth" // Points to your new api/auth.js
+        },
+        media_folder: "assets/uploads",
+        collections: [
+          {
+            name: "meeting_notes",
+            label: "Meeting Notes",
+            folder: "content/notes",
+            create: true,
+            slug: "{{year}}-{{month}}-{{day}}-{{slug}}",
+            fields: [
+              { label: "Title", name: "title", widget: "string" },
+              { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" },
+              { label: "Body", name: "body", widget: "markdown" }
+            ]
+          }
+        ]
+      }
+    });
   </script>
 </body>
 </html>
