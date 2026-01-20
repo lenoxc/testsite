@@ -8,16 +8,20 @@
 </head>
 <body>
   <script>
-    // Manual Initialization: This replaces the need for a config.yml file entirely.
+    // 1. THIS LINE IS THE FIX: It prevents the 404 by disabling the search for config.yml
+    window.CMS_MANUAL_INIT = true;
+
+    // 2. Now we provide the configuration directly
     CMS.init({
       config: {
         backend: {
           name: "github",
-          repo: "IHCC-Cyber-Club/Club-Website", // Your repo path
+          repo: "IHCC-Cyber-Club/Club-Website", 
           branch: "main",
           base_url: "https://test-site-rkej17j2v-cael-lenoxs-projects.vercel.app",
           auth_endpoint: "api/auth" 
         },
+        load_config_file: false, // 3. Extra backup to ensure it doesn't look for a file
         media_folder: "assets/uploads",
         public_folder: "/assets/uploads",
         collections: [
