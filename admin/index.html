@@ -3,43 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IHCC Admin Portal</title>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <title>Content Manager</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
-  <script>
-    // 1. THIS LINE IS THE FIX: It prevents the 404 by disabling the search for config.yml
-    window.CMS_MANUAL_INIT = true;
-
-    // 2. Now we provide the configuration directly
-    CMS.init({
-      config: {
-        backend: {
-          name: "github",
-          repo: "IHCC-Cyber-Club/Club-Website", 
-          branch: "main",
-          base_url: "https://test-site-rkej17j2v-cael-lenoxs-projects.vercel.app",
-          auth_endpoint: "api/auth" 
-        },
-        load_config_file: false, // 3. Extra backup to ensure it doesn't look for a file
-        media_folder: "assets/uploads",
-        public_folder: "/assets/uploads",
-        collections: [
-          {
-            name: "meeting_notes",
-            label: "Meeting Notes",
-            folder: "content/notes",
-            create: true,
-            slug: "{{year}}-{{month}}-{{day}}-{{slug}}",
-            fields: [
-              { label: "Title", name: "title", widget: "string" },
-              { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" },
-              { label: "Body", name: "body", widget: "markdown" }
-            ]
-          }
-        ]
-      }
-    });
-  </script>
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 </body>
 </html>
