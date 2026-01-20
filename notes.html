@@ -64,7 +64,7 @@
     .navlinks a.active { color: var(--primary); }
 
     .container {
-      max-width: 1100px;
+      max-width: 1200px; /* Slightly wider to accommodate 3 columns comfortably */
       margin: 0 auto;
       padding: 60px 20px;
       flex: 1;
@@ -78,11 +78,11 @@
       font-weight: 900;
     }
 
-    /* THE GRID FORMAT */
+    /* FORCED 3-COLUMN GRID */
     .notes-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(3, 1fr); /* This keeps it exactly 3 across */
+      gap: 30px;
     }
 
     .card {
@@ -120,6 +120,13 @@
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
+    }
+
+    /* Mobile Responsive: Drops to 1 column on small phones */
+    @media (max-width: 768px) {
+      .notes-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .footer {
@@ -182,22 +189,17 @@
   </script>
 
   <script>
-    // FORMAL DATE FORMATTER
     function formatFullDate(dateString) {
       const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       const parts = dateString.split('-');
-      
       if (parts.length < 3) return dateString;
-
       const year = parts[0];
       const month = months[parseInt(parts[1], 10) - 1];
       const day = parseInt(parts[2], 10);
-
       let suffix = "th";
       if (day % 10 === 1 && day !== 11) suffix = "st";
       else if (day % 10 === 2 && day !== 12) suffix = "nd";
       else if (day % 10 === 3 && day !== 13) suffix = "rd";
-
       return `${month} ${day}${suffix}, ${year}`;
     }
 
@@ -206,38 +208,25 @@
       try {
           const response = await fetch('https://api.github.com/repos/IHCC-Cyber-Club/Club-Website/contents/notes');
           if (!response.ok) throw new Error('GitHub connection failed');
-          
           const files = await response.json();
-          // Sort newest files to top
           files.sort((a, b) => b.name.localeCompare(a.name));
-
           container.innerHTML = ''; 
-
           for (const file of files) {
               if (file.name.endsWith('.html')) {
-                  // Expects filename to start with YYYY-MM-DD
                   const rawDate = file.name.substring(0, 10); 
                   const displayDate = formatFullDate(rawDate);
-
-                  const cardHtml = `
+                  container.insertAdjacentHTML('beforeend', `
                     <div class="card">
                         <h3>${displayDate}</h3>
                         <a class="view-btn" href="notes/${file.name}">View Notes</a>
                     </div>
-                  `;
-                  container.insertAdjacentHTML('beforeend', cardHtml);
+                  `);
               }
           }
-
-          if (container.innerHTML === '') {
-              container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No archives found.</p>';
-          }
       } catch (error) {
-          console.error(error);
           container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Unable to connect to GitHub archive.</p>';
       }
     }
-
     document.addEventListener('DOMContentLoaded', loadMeetingNotes);
   </script>
 </body>
