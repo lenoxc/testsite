@@ -10,13 +10,12 @@
   <style>
     :root { 
       --primary: #ff4b4b; 
-      --card-bg: #110826; 
+      --card-bg: #0d1117; 
       --accent: #5e2ca5;
       --text: #ffffff;
       --band-bg: rgba(94, 44, 165, 0.08); 
     }
 
-    /* STICKY FOOTER LOGIC */
     html, body { height: 100%; margin: 0; }
     body {
       background-color: #050111;
@@ -43,24 +42,14 @@
 
     .main-content { flex: 1; }
 
-    /* PURPLE BANDS & SEPARATING LINES */
-    .band {
-      width: 100%;
-      padding: 100px 0;
-      border-top: 1px solid rgba(94, 44, 165, 0.3);
-      border-bottom: 1px solid rgba(94, 44, 165, 0.3);
-      background: var(--band-bg);
-      margin-bottom: 60px;
-    }
-
+    /* HEADER */
     .about-header { 
       font-family: 'Orbitron', sans-serif; 
       font-weight: 900; 
       color: white; 
       font-size: 2.5rem;
       text-align: center;
-      margin-top: 80px;
-      margin-bottom: 20px;
+      margin: 80px 0 20px;
     }
 
     .sub-tagline {
@@ -72,40 +61,55 @@
       line-height: 1.6;
     }
 
-    .section-title { 
-      font-family: 'Orbitron', sans-serif; 
-      color: var(--primary); 
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 1.6rem;
-      font-weight: 800;
+    /* PURPLE BANDS & SEPARATING LINES */
+    .band {
+      width: 100%;
+      padding: 80px 0;
+      border-top: 1px solid rgba(94, 44, 165, 0.3);
+      border-bottom: 1px solid rgba(94, 44, 165, 0.3);
+      background: var(--band-bg);
+      margin-bottom: 60px;
     }
 
-    /* THE PURPLE CONTENT BOXES (Floating Islands) */
-    .content-box {
-      background-color: var(--card-bg);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 60px 40px;
-      max-width: 1100px;
+    /* TERMINAL WINDOW STYLING */
+    .terminal-box {
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      max-width: 1000px;
       margin: 0 auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .story-content { text-align: center; max-width: 900px; margin: 0 auto; }
-    .story-content p { line-height: 1.8; color: rgba(255,255,255,0.8); font-size: 1.05rem; margin-bottom: 25px; }
+    .terminal-header {
+      background: #161b22;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
 
-    /* THE VALUES GRID */
+    .terminal-buttons { display: flex; gap: 8px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+    .terminal-user { font-family: monospace; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+    .terminal-body { padding: 50px 40px; }
+    .terminal-title { font-family: 'Orbitron', sans-serif; font-weight: 900; color: white; font-size: 1.6rem; margin-bottom: 25px; text-transform: uppercase; }
+
+    /* VALUES GRID */
     .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
     .value-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
     .value-card .icon { font-size: 3rem; margin-bottom: 25px; }
-    .value-card h3 { font-family: 'Orbitron', sans-serif; font-size: 1.25rem; margin-bottom: 15px; color: white; }
+    .value-card h3 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; margin-bottom: 15px; color: white; }
     .value-card p { font-size: 0.95rem; line-height: 1.6; color: rgba(255,255,255,0.7); margin: 0; }
 
-    /* GET INVOLVED CALLOUT */
+    /* INVOLVED SECTION */
     .involved-content { text-align: center; }
-    .involved-content h3 { font-family: 'Orbitron', sans-serif; font-size: 2rem; color: white; margin-bottom: 25px; }
-    .involved-content p { color: rgba(255,255,255,0.8); line-height: 1.6; font-size: 1.15rem; }
     .president-link { color: #8a5cf5; text-decoration: none; font-weight: 600; }
     .president-link:hover { text-decoration: underline; }
 
@@ -144,44 +148,79 @@
     </div>
 
     <div class="band">
-      <div class="content-box">
-        <div class="section-title">Our Story</div>
-        <div class="story-content">
-          <p>The IHCC Cybersecurity Club was formed in 2022 by students in the Cyber Security and Systems Administration program. Their goal was to build strong professional relationships while gaining hands-on experience that translates directly to the workforce.</p>
-          <p>Our journey is driven by innovation, customer-centricity, and simplifying complex technologies. Today, we continue pushing the boundaries of modern cloud infrastructure.</p>
+      <div class="terminal-box">
+        <div class="terminal-header">
+          <div class="terminal-buttons">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+          </div>
+          <div class="terminal-user">root@cyberrookie:~/story.txt</div>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-title">> Our Story</div>
+          <p style="color: rgba(255,255,255,0.8); line-height: 1.8; font-size: 1.05rem;">
+            The IHCC Cybersecurity Club was formed in 2022 by students in the Cyber Security and Systems Administration program. Their goal was to build strong professional relationships while gaining hands-on experience that translates directly to the workforce.
+            <br><br>
+            Our journey is driven by innovation, customer-centricity, and simplifying complex technologies. Today, we continue pushing the boundaries of modern cloud infrastructure.
+          </p>
         </div>
       </div>
     </div>
 
     <div class="band">
-      <div class="content-box">
-        <div class="section-title">Our Values</div>
-        <div class="values-grid">
-          <div class="value-card">
-            <div class="icon">🤝</div>
-            <h3>Community</h3>
-            <p>Our club strives to build strong student relationships that persist after graduation.</p>
+      <div class="terminal-box">
+        <div class="terminal-header">
+          <div class="terminal-buttons">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
           </div>
-          <div class="value-card">
-            <div class="icon">📚</div>
-            <h3>Academic Support</h3>
-            <p>We promote study groups and peer support to improve understanding and success inside and outside the classroom.</p>
-          </div>
-          <div class="value-card">
-            <div class="icon">👥</div>
-            <h3>Collaboration</h3>
-            <p>We work together on technical challenges and projects to learn from one another and build teamwork skills.</p>
+          <div class="terminal-user">root@cyberrookie:~/values.config</div>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-title" style="text-align: center;">> Core Values</div>
+          <div class="values-grid">
+            <div class="value-card">
+              <div class="icon">🤝</div>
+              <h3>Community</h3>
+              <p>Building strong student relationships that persist after graduation.</p>
+            </div>
+            <div class="value-card">
+              <div class="icon">📚</div>
+              <h3>Support</h3>
+              <p>Promoting study groups and peer support for academic success.</p>
+            </div>
+            <div class="value-card">
+              <div class="icon">👥</div>
+              <h3>Collaboration</h3>
+              <p>Learning teamwork through technical challenges and projects.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="band">
-      <div class="content-box">
-        <div class="involved-content">
-          <h3>Want to get involved?</h3>
-          <p>Membership is open to current students in the Cyber Security and Systems Administration program.</p>
-          <p>Please contact <a href="mailto:Noah.Matt@stu.indianhills.edu" class="president-link">Club President Noah Matt</a> for more information.</p>
+      <div class="terminal-box" style="max-width: 800px;">
+        <div class="terminal-header">
+          <div class="terminal-buttons">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+          </div>
+          <div class="terminal-user">root@cyberrookie:~/join.exe</div>
+        </div>
+        <div class="terminal-body">
+          <div class="involved-content">
+            <div class="terminal-title">> Get Involved</div>
+            <p style="color: rgba(255,255,255,0.8); line-height: 1.6; font-size: 1.1rem; margin-bottom: 20px;">
+              Membership is open to current students in the Cyber Security and Systems Administration program.
+            </p>
+            <p style="color: rgba(255,255,255,0.8); font-size: 1.1rem;">
+              Please contact <a href="mailto:Noah.Matt@stu.indianhills.edu" class="president-link">Club President Noah Matt</a> for more information.
+            </p>
+          </div>
         </div>
       </div>
     </div>
