@@ -1,103 +1,43 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Meeting Notes • IHCC Cybersecurity Club</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css">
-</head>
-<body>
-  <div id="bg"></div>
+async function loadMeetingNotes() {
+    const container = document.getElementById('notes-grid'); 
+    try {
+        // Step 1: Fetch from your 'contents/notes' folder
+        const response = await fetch('https://api.github.com/repos/IHCC-Cyber-Club/Club-Website/contents/contents/notes');
+        
+        if (!response.ok) throw new Error('Could not reach GitHub');
+        
+        const files = await response.json();
+        
+        // Step 2: Filter for the NEW .html files and sort by date (newest first)
+        const htmlFiles = files.filter(f => f.name.endsWith('.html') && f.name !== 'index.html');
+        htmlFiles.sort((a, b) => b.name.localeCompare(a.name));
 
-  <div class="page">
-    <div class="nav">
-      <div class="nav-inner">
-        <div class="brand">IHCC Cybersecurity Club</div>
-        <div class="navlinks">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a class="active" href="notes.html">Notes</a>
-        </div>
-      </div>
-    </div>
+        container.innerHTML = ''; // Clear the "Loading" or "Empty" message
 
-    <section class="band" style="padding: 46px 0 24px;">
-      <div class="container" style="text-align:center;">
-        <div style="font-size:34px;font-weight:900; font-family: 'Orbitron', sans-serif;">Meeting Notes</div>
-        <p style="margin-top: 10px; opacity: 0.8;">Automatically updated from our club archives.</p>
-      </div>
-    </section>
+        if (htmlFiles.length === 0) {
+            container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Archive is currently empty.</p>';
+            return;
+        }
 
-    <section>
-      <div class="container" style="padding: 34px 0 60px;">
-        <div class="grid" id="notes-grid">
-          <p style="color: white; grid-column: 1/-1; text-align: center;">Loading latest meeting minutes...</p>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div style="font-weight:900;">IHCC Cyber</div>
-      <div class="mini">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="notes.html">Notes</a>
-        <a href="note-editor.html">Notes Editor</a>
-      </div>
-    </footer>
-  </div>
-
-  <script type="module">
-    import { startBackgroundNet } from "./assets/bg-network.js";
-    startBackgroundNet("bg");
-  </script>
-
-  <script>
-    async function loadMeetingNotes() {
-      const container = document.getElementById('notes-grid'); 
-      
-      try {
-          // Use 'contents/notes' to match your repository folder exactly
-          const response = await fetch('https://api.github.com/repos/IHCC-Cyber-Club/Club-Website/contents/contents/notes');
-
-          if (!response.ok) throw new Error('GitHub API Error');
-
-          const files = await response.json();
-
-          // Sorts files by name (YYYY-MM-DD) descending so newest is at the top
-          files.sort((a, b) => b.name.localeCompare(a.name));
-
-          container.innerHTML = ''; 
-
-          for (const file of files) {
-              if (file.name.endsWith('.md')) {
-                  // Format: YYYY-MM-DD-Title.md
-                  const datePart = file.name.substring(0, 10); 
-                  const titlePart = file.name.replace('.md', '').substring(11).replace(/-/g, ' ');
-
-                  const noteElement = `
-                      <div class="card" style="min-height:auto; text-align: left; padding: 20px;">
-                          <h3 style="font-size:18px; text-transform: capitalize; color: #00f2ff; font-family: 'Orbitron';">${titlePart || 'Meeting Notes'}</h3>
-                          <p style="font-size: 12px; opacity: 0.7; margin: 5px 0 15px;">${datePart}</p>
-                          <a class="btn secondary" href="${file.html_url}" target="_blank" style="display:inline-block; font-size:11px; padding: 8px 16px;">View Full Notes</a>
-                      </div>
-                  `;
-                  container.insertAdjacentHTML('beforeend', noteElement);
-              }
-          }
-
-          if (container.innerHTML === '') {
-              container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Archive is currently empty.</p>';
-          }
-
-      } catch (error) {
-          console.error("Connection error:", error);
-          container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ff4b4b;">Unable to connect to GitHub. Please refresh.</p>';
-      }
+        for (const file of htmlFiles) {
+            // Step 3: Clean up the filename for the card title
+            // e.g., "jan-5-2026.html" becomes "Jan 5 2026"
+            const displayName = file.name.replace('.html', '').replace(/-/g, ' ');
+            
+            const card = `
+                <div class="card" style="text-align: left; padding: 20px; min-height: auto;">
+                    <h3 style="color: #00f2ff; font-family: 'Orbitron'; font-size: 16px; text-transform: capitalize; margin-bottom: 15px;">
+                        ${displayName}
+                    </h3>
+                    <a class="btn secondary" href="contents/notes/${file.name}" style="display: inline-block; font-size: 10px; padding: 8px 15px; background: #00f2ff; color: #000; text-decoration: none; font-family: 'Orbitron'; font-weight: 900;">
+                        Read Minutes
+                    </a>
+                </div>`;
+            container.insertAdjacentHTML('beforeend', card);
+        }
+    } catch (e) {
+        console.error(e);
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ff4b4b;">Unable to connect to GitHub. Please refresh.</p>';
     }
-
-    document.addEventListener('DOMContentLoaded', loadMeetingNotes);
-  </script>
-</body>
-</html>
+}
+document.addEventListener('DOMContentLoaded', loadMeetingNotes);
