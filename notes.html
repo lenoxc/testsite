@@ -26,75 +26,15 @@
 
     <section class="band" style="padding: 46px 0 24px;">
       <div class="container" style="text-align:center;">
-        <div style="font-size:34px;font-weight:900;">Meeting Notes</div>
+        <div style="font-size:34px;font-weight:900; font-family: 'Orbitron', sans-serif;">Meeting Notes</div>
+        <p style="margin-top: 10px; opacity: 0.8;">Automatically updated from our club archives.</p>
       </div>
     </section>
 
     <section>
       <div class="container" style="padding: 34px 0 60px;">
-        <div class="grid">
-          <div class="card" style="min-height:auto;">
-            <h3 style="font-size:16px;">January 5th, 2026</h3>
-            <div style="margin-top:14px;">
-              <a class="btn secondary" href="notes/2026-01-05.html">View Notes</a>
-            </div>
-          </div>
-
-          <div class="card" style="min-height:auto;">
-            <h3 style="font-size:16px;">December 12th, 2025</h3>
-            <div style="margin-top:14px;">
-              <a class="btn secondary" href="notes/2025-12-12.html">View Notes</a>
-            </div>
-          </div>
-
-          <div class="card" style="min-height:auto;">
-            <h3 style="font-size:16px;">November 24th, 2025</h3>
-            <div style="margin-top:14px;">
-              <a class="btn secondary" href="notes/2025-11-24.html">View Notes</a>
-            </div>
-          </div>
-
-          <div class="card" style="min-height:auto;">
-            <h3 style="font-size:16px;">May 28th, 2025</h3>
-            <div style="margin-top:14px;">
-              <a class="btn secondary" href="notes/2025-05-28.html">View Notes</a>
-            </div>
-          </div>
-
-          <div class="card" style="min-height:auto;">
-            <h3 style="font-size:16px;">April 26th, 2025</h3>
-            <div style="margin-top:14px;">
-              <a class="btn secondary" href="notes/2025-04-26.html">View Notes</a>
-            </div>
-          </div>
-
-          <div class="card" style="min-height:auto;">
-            <h3 style="font-size:16px;">April 16th, 2025</h3>
-            <div style="margin-top:14px;">
-              <a class="btn secondary" href="notes/2025-04-16.html">View Notes</a>
-            </div>
-          </div>
-
-          <div class="card" style="min-height:auto;">
-            <h3 style="font-size:16px;">March 18th, 2025</h3>
-            <div style="margin-top:14px;">
-              <a class="btn secondary" href="notes/2025-03-18.html">View Notes</a>
-            </div>
-          </div>
-
-          <div class="card" style="min-height:auto;">
-            <h3 style="font-size:16px;">March 11th, 2025</h3>
-            <div style="margin-top:14px;">
-              <a class="btn secondary" href="notes/2025-03-11.html">View Notes</a>
-            </div>
-          </div>
-
-          <div class="card" style="min-height:auto;">
-            <h3 style="font-size:16px;">March 4th, 2025</h3>
-            <div style="margin-top:14px;">
-              <a class="btn secondary" href="notes/2025-03-04.html">View Notes</a>
-            </div>
-          </div>
+        <div class="grid" id="notes-grid">
+          <p style="color: white; grid-column: 1/-1; text-align: center;">Loading latest meeting minutes...</p>
         </div>
       </div>
     </section>
@@ -112,50 +52,62 @@
   <script type="module">
     import { startBackgroundNet } from "./assets/bg-network.js";
     startBackgroundNet("bg");
+  </script>
 
-    <script>
-async function loadMeetingNotes() {
-    // 1. Where the notes will go (Make sure you have a div with id="notes-list")
-    const container = document.getElementById('notes-list'); 
-    
-    try {
-        // 2. Fetch the list of files from your GitHub repo
-        const response = await fetch('https://api.github.com/repos/IHCC-Cyber-Club/Club-Website/contents/content/notes');
-        const files = await response.json();
+  <script>
+    async function loadMeetingNotes() {
+      const container = document.getElementById('notes-grid'); 
+      
+      try {
+          const response = await fetch('https://api.github.com/repos/IHCC-Cyber-Club/Club-Website/contents/content/notes');
+          const files = await response.json();
 
-        // 3. Sort files so the newest meeting is at the top
-        files.sort((a, b) => b.name.localeCompare(a.name));
+          // Sort files so the newest meeting is at the top
+          files.sort((a, b) => b.name.localeCompare(a.name));
 
-        container.innerHTML = ''; // Clear any "Loading..." text
+          container.innerHTML = ''; // Clear loading text
 
-        for (const file of files) {
-            if (file.name.endsWith('.md')) {
-                // Extracts date (YYYY-MM-DD) from filename
-                const dateStr = file.name.substring(0, 10); 
-                // Cleans up the filename to create a Title
-                const title = file.name.replace('.md', '').substring(11).replace(/-/g, ' ');
+          for (const file of files) {
+              if (file.name.endsWith('.md')) {
+                  // Format: YYYY-MM-DD-Title.md
+                  const datePart = file.name.substring(0, 10); 
+                  const titlePart = file.name.replace('.md', '').substring(11).replace(/-/g, ' ');
 
-                // 4. THE DESIGN: This is where you match your CSS
-                // Replace the classes below (e.g., 'note-card') with your actual club CSS classes
-                const noteElement = `
-                    <div class="note-card" style="margin-bottom: 20px; border-left: 5px solid #cc0000; padding: 15px; background: #f9f9f9;">
-                        <h2 style="margin-top: 0; text-transform: capitalize;">${title}</h2>
-                        <p><strong>Meeting Date:</strong> ${dateStr}</p>
-                        <a href="${file.html_url}" target="_blank" class="view-btn">Read Full Notes on GitHub</a>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', noteElement);
-            }
-        }
-    } catch (error) {
-        console.error("Error loading notes:", error);
-        container.innerHTML = '<p>Check back later for meeting notes!</p>';
+                  // Using your exact CSS classes: "card" and "btn secondary"
+                  const noteElement = `
+                      <div class="card" style="min-height:auto;">
+                          <h3 style="font-size:16px; text-transform: capitalize;">${titlePart || datePart}</h3>
+                          <p style="font-size: 12px; opacity: 0.7; margin-top: 5px;">${datePart}</p>
+                          <div style="margin-top:14px;">
+                              <a class="btn secondary" href="${file.html_url}" target="_blank">View Notes</a>
+                          </div>
+                      </div>
+                  `;
+                  container.insertAdjacentHTML('beforeend', noteElement);
+              }
+          }
+
+          // If folder is empty
+          if (container.innerHTML === '') {
+              container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No notes found in the archive.</p>';
+          }
+
+      } catch (error) {
+          console.error("Error loading notes:", error);
+          container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Unable to connect to GitHub. Please refresh.</p>';
+      }
     }
-}
 
-// Run the function when the page loads
-document.addEventListener('DOMContentLoaded', loadMeetingNotes);
-</script>
-
+    document.addEventListener('DOMContentLoaded', loadMeetingNotes);
+  </script>
+<footer class="footer">
+  <div style="font-weight:900;">IHCC Cyber</div>
+  <div class="mini">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="notes.html">Notes</a>
+    <a href="admin/index.html">Staff Login</a>
+  </div>
+</footer>
 </body>
 </html>
