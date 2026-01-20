@@ -3,5 +3,5 @@ backend:
   repo: IHCC-Cyber-Club/Club-Website
   branch: main
   # This points to a community-run helper that bridges GitHub and Vercel
-  base_url: https://test-site-rkej17j2v-cael-lenoxs-projects.vercel.app
+  base_url: https://test-site-git-main-cael-lenoxs-projects.vercel.app/
   auth_endpoint: /api/auth
